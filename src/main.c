@@ -1,107 +1,43 @@
 #include "philo.h"
 
-void	print_current_time(void)
+void	usage(void)
 {
-	struct timeval	tv_start;
-	struct timeval	tv;
-
-	if (gettimeofday(&tv_start, NULL))
-		exit(1);
-	usleep(1000000);
-	if (gettimeofday(&tv, NULL))
-		exit(1);
-	printf("duration in Milliseconds: %ld\n", (tv.tv_sec - tv_start.tv_sec)
-		* 1000 + (tv.tv_usec - tv_start.tv_usec) / 1000);
+	printf("Usage: ./philo\n");
+	printf("number_of_philosophers < 2\n");
+	printf("time_to_die < 60\n");
+	printf("time_to_eat < 60\n");
+	printf("time_to_sleep < 60\n");
+	printf("[number_of_times_each_philosopher_must_eat] < 1\n");
+	exit(1);
 }
 
-void	*print_hello(void *arg)
+void	parsing(int argc, char **argv, t_table *table)
 {
-	int	i;
-
-	i = 0;
-	(void)arg;
-	while (i < 10)
-	{
-		printf("Hello\n");
-		i++;
-	}
-	return (NULL);
+	table->philo_num = atoi(argv[1]);
+	table->time_to_die = atoi(argv[2]);
+	table->time_to_eat = atoi(argv[3]);
+	table->time_to_sleep = atoi(argv[4]);
+	if (argc == 6)
+		table->eat_times = atoi(argv[5]);
+	else
+		table->eat_times = -1;
+	if (table->philo_num < 2 || table->philo_num > 200 || table->time_to_die < 60 || table->time_to_eat < 60 || table->time_to_sleep < 60 || (table->eat_times < 1 && table->eat_times != -1))
+		usage();
 }
 
-void	*print_world(void *arg)
+int	main(int argc, char **argv)
 {
-	int	i;
+	t_table	table;
+	if (argc < 5 || argc > 6)
+		usage();
+	parsing(argc, argv, &table);
+	printf("philo_num: %d\n", table.philo_num);
+	printf("time_to_die: %d\n", table.time_to_die);
+	printf("time_to_eat: %d\n", table.time_to_eat);
+	printf("time_to_sleep: %d\n", table.time_to_sleep);
+	if (table.eat_times != -1)
+		printf("eat_times: %d\n", table.eat_times);
+	printf("\033[1;32mParsing is done! \033[0m\n");
 
-	i = 0;
-	(void)arg;
-	while (i < 10)
-	{
-		printf("\tWorld\n");
-		i++;
-	}
-	return (NULL);
-}
-
-void	*hallo(void *arg)
-{
-	int	*num;
-	int	i;
-
-	num = (int *)arg;
-	i = 0;
-	while (i < 10000)
-	{
-		(*num)++;
-		i++;
-	}
-	return (NULL);
-}
-
-data_t	*create_data(void)
-{
-	data_t	*data;
-
-	data = malloc(sizeof(data_t));
-	if (!data)
-		exit(1);
-	data->num = 0;
-	if (pthread_mutex_init(&data->mutex, NULL))
-		exit(1);
-	return (data);
-}
-
-void	*hallo2(void *arg)
-{
-	data_t	*data;
-	int		i;
-
-	data = (data_t *)arg;
-	i = 0;
-	while (i < 10000000)
-	{
-		pthread_mutex_lock(&data->mutex);
-		(data->num)++;
-		pthread_mutex_unlock(&data->mutex);
-		i++;
-	}
-	return (NULL);
-}
-
-int	main(void)
-{
-	data_t *data;
-	pthread_t thread1;
-	pthread_t thread2;
-
-	data = create_data();
-
-	pthread_create(&thread1, NULL, hallo2, data);
-	pthread_create(&thread2, NULL, hallo2, data);
-	usleep(10);
-	pthread_join(thread1, NULL);
-	pthread_join(thread2, NULL);
-	printf("num: %d\n", data->num);
-	pthread_mutex_destroy(&data->mutex);
-	free(data);
 	return (0);
 }

@@ -12,7 +12,15 @@ typedef struct data_s
 {
 	int				num;
 	pthread_mutex_t	mutex;
-	data_t			*next;
 }					data_t;
+
+typedef struct s_table
+{
+	int				philo_num;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				eat_times;
+}					t_table;
 
 #endif
