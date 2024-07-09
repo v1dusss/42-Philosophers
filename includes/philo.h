@@ -28,6 +28,7 @@ typedef struct s_table
 	int				dead_count;
 	uint64_t		start_time;
 	pthread_mutex_t	*forks;
+	pthread_t		waiter;
 	t_philo			*philo;
 }					t_table;
 
@@ -35,5 +36,6 @@ typedef struct s_table
 
 void				usage(void);
 void				parsing(int argc, char **argv, t_table *table);
+void				dinner_time(t_table *table);
 
 #endif

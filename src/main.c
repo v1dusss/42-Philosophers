@@ -22,42 +22,47 @@ void	destory_forks(t_table *table)
 	free(table->philo);
 }
 
-bool	create_philo(t_table *table, t_philo *philo)
+bool	create_philo(t_table *table)
 {
 	int	i;
 
 	i = -1;
-	table->philo = philo;
 	table->forks = malloc(sizeof(pthread_mutex_t) * table->philo_num);
 	if (!table->forks)
 		return (false);
 	while (++i < table->philo_num)
 		pthread_mutex_init(&table->forks[i], NULL);
 	i = -1;
-	philo = (t_philo *)malloc(sizeof(t_philo) * table->philo_num);
-	if (!philo)
-		return (false);
+	table->philo = (t_philo *)malloc(sizeof(t_philo) * table->philo_num + 1);
 	while (++i < table->philo_num)
 	{
-		philo[i].id = i + 1;
-		philo[i].eat_times = 0;
-		philo[i].last_eat = 0;
-		(philo[i].left_fork = &table->forks[i]);
-		(philo[i].right_fork = &table->forks[(i + 1) % table->philo_num]);
+		table->philo[i].id = i + 1;
+		table->philo[i].eat_times = 0;
+		table->philo[i].last_eat = 0;
+		(table->philo[i].left_fork = &table->forks[i]);
+		(table->philo[i].right_fork = &table->forks[(i + 1)
+			% table->philo_num]);
+		printf("philo %d created\n", table->philo[i].id);
 	}
+	i = -1;
+	while (++i < table->philo_num)
+	{
+		printf("philo %d is here\n", table->philo[i].id);
+	}
+	printf("--------------------\n");
 	return (true);
 }
 
 int	main(int argc, char **argv)
 {
 	t_table	table;
-	t_philo	philo;
 
 	if (argc < 5 || argc > 6)
 		usage();
 	parsing(argc, argv, &table);
 	print_parsing(&table);
-	if (!create_philo(&table, &philo))
+	if (!create_philo(&table))
 		return (printf(ERROR_PHILO), destory_forks(&table), 1);
+	dinner_time(&table);
 	return (0);
 }
