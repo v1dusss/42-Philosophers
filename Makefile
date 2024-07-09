@@ -10,7 +10,8 @@ VPATH = \
 
 SRC = main.c \
 		parsing.c \
-		dinner.c
+		dinner.c \
+		utils.c
 
 OBJ	:=	$(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 

@@ -13,12 +13,12 @@ void	usage(void)
 
 void	parsing(int argc, char **argv, t_table *table)
 {
-	table->philo_num = atoi(argv[1]);
-	table->time_to_die = atoi(argv[2]);
-	table->time_to_eat = atoi(argv[3]);
-	table->time_to_sleep = atoi(argv[4]);
+	table->philo_num = ft_atoi(argv[1]);
+	table->time_to_die = ft_atoi(argv[2]);
+	table->time_to_eat = ft_atoi(argv[3]);
+	table->time_to_sleep = ft_atoi(argv[4]);
 	if (argc == 6)
-		table->eat_times = atoi(argv[5]);
+		table->eat_times = ft_atoi(argv[5]);
 	else
 		table->eat_times = -1;
 	if (table->philo_num < 2 || table->philo_num > 200

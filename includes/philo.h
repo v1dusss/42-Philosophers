@@ -38,4 +38,6 @@ void				usage(void);
 void				parsing(int argc, char **argv, t_table *table);
 void				dinner_time(t_table *table);
 
+int					ft_atoi(const char *str);
+
 #endif
