@@ -17,6 +17,7 @@ typedef struct s_philo
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	pthread_t		thread;
+	int				dead;
 }					t_philo;
 typedef struct s_table
 {
@@ -39,5 +40,6 @@ void				parsing(int argc, char **argv, t_table *table);
 void				dinner_time(t_table *table);
 
 int					ft_atoi(const char *str);
+int					ft_usleep(size_t ms);
 
 #endif

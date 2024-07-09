@@ -19,7 +19,8 @@ void	destory_forks(t_table *table)
 	while (++i < table->philo_num)
 		pthread_mutex_destroy(&table->forks[i]);
 	free(table->forks);
-	free(table->philo);
+	if (table->philo)
+		free(table->philo);
 }
 
 bool	create_philo(t_table *table)
@@ -39,6 +40,7 @@ bool	create_philo(t_table *table)
 		table->philo[i].id = i + 1;
 		table->philo[i].eat_times = 0;
 		table->philo[i].last_eat = 0;
+		table->philo[i].dead = 0;
 		(table->philo[i].left_fork = &table->forks[i]);
 		(table->philo[i].right_fork = &table->forks[(i + 1)
 			% table->philo_num]);
