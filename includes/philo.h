@@ -8,12 +8,6 @@
 # include <sys/time.h>
 # include <unistd.h>
 
-typedef struct data_s
-{
-	int				num;
-	pthread_mutex_t	mutex;
-}					data_t;
-
 typedef struct s_table
 {
 	int				philo_num;
@@ -21,6 +15,22 @@ typedef struct s_table
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				eat_times;
+	int				dead_count;
+	uint64_t		start_time;
 }					t_table;
+
+typedef struct s_philo
+{
+	int				id;
+	int				eat_times;
+	long long		last_eat;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
+	pthread_t		thread;
+	t_table			*table;
+}					t_philo;
+
+void				usage(void);
+void				parsing(int argc, char **argv, t_table *table);
 
 #endif

@@ -8,7 +8,8 @@ VPATH = \
 		includes \
 		src
 
-SRC = main.c
+SRC = main.c \
+		parsing.c
 
 OBJ	:=	$(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 
