@@ -25,7 +25,7 @@ int	ft_atoi(const char *str)
 	return (0);
 }
 
-size_t	get_time(void)
+long long	get_time(void)
 {
 	struct timeval	time;
 
@@ -37,12 +37,21 @@ size_t	get_time(void)
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-int	ft_usleep(size_t ms)
+int	ft_usleep(long long ms)
 {
-	size_t	start;
+	long long	start;
 
 	start = get_time();
 	while (get_time() - start < ms)
 		usleep(100);
 	return (0);
+}
+
+void	get_start_time(t_table *table)
+{
+	struct timeval	tv;
+
+	if (gettimeofday(&tv, NULL))
+		exit(1);
+	table->start = tv.tv_sec * 1000000 + tv.tv_usec;
 }

@@ -44,14 +44,10 @@ bool	create_philo(t_table *table)
 		(table->philo[i].left_fork = &table->forks[i]);
 		(table->philo[i].right_fork = &table->forks[(i + 1)
 			% table->philo_num]);
-		printf("philo %d created\n", table->philo[i].id);
+		table->philo[i].table = table;
+		printf("philo struct %d created\n", table->philo[i].id);
 	}
 	i = -1;
-	while (++i < table->philo_num)
-	{
-		printf("philo %d is here\n", table->philo[i].id);
-	}
-	printf("--------------------\n");
 	return (true);
 }
 
@@ -66,5 +62,8 @@ int	main(int argc, char **argv)
 	if (!create_philo(&table))
 		return (printf(ERROR_PHILO), destory_forks(&table), 1);
 	dinner_time(&table);
+	// printf("start: %lld\n", table.start);
+	// get_start_time(&table);
+	// printf("start: %lld\n", table.start);
 	return (0);
 }
