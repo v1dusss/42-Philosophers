@@ -1,5 +1,17 @@
 #include "philo.h"
 
+void	philo_eat(t_philo *philo)
+{
+	pthread_mutex_lock(philo->left_fork);
+	printf("%dms %d took left fork\n", get_timestap(*philo), philo->id);
+	pthread_mutex_lock(philo->right_fork);
+	printf("%dms %d took right fork\n", get_timestap(*philo), philo->id);
+	printf("%dms %d is eating\n", get_timestap(*philo), philo->id);
+	ft_usleep(philo->table->time_to_eat);
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
+}
+
 void	*waiter_life(void *arg)
 {
 	t_table	*table;
@@ -14,25 +26,19 @@ void	*philo_life(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	printf("philo %d/%d is here\n", philo->id, philo->table->philo_num);
+	// printf("philo %d/%d is here\n", philo->id, philo->table->philo_num);
 	if (philo->id % 2 == 1)
 	{
 		ft_usleep(philo->table->time_to_eat);
-		printf("*philo %d is waiting\n", philo->id);
+		// printf("*philo %d is waiting\n", philo->id);
 	}
-	printf("time of philo %d: %lld microsec\n", philo->id, ((get_time()
-				- philo->table->start) / 1000));
 	// while (philo->dead == 0)
 	// {
-	// 	philo_eat(philo);
-	// 	philo_sleep(philo);
+	philo_eat(philo);
+	// philo_sleep(philo);
 	// 	philo_think(philo);
 	// }
 	return (NULL);
-}
-
-void	philo_eat(t_philo *philo)
-{
 }
 
 // int	philo_think(t_philo *philo)

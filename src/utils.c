@@ -25,6 +25,11 @@ int	ft_atoi(const char *str)
 	return (0);
 }
 
+int	get_timestap(t_philo philo)
+{
+	return ((get_time() - philo.table->start) / 1000);
+}
+
 long long	get_time(void)
 {
 	struct timeval	time;

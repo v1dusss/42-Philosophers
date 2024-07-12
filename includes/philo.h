@@ -45,5 +45,6 @@ int						ft_atoi(const char *str);
 int						ft_usleep(long long ms);
 void					get_start_time(t_table *table);
 long long				get_time(void);
+int						get_timestap(t_philo philo);
 
 #endif
