@@ -14,7 +14,7 @@ typedef struct s_philo
 {
 	int					id;
 	int					eat_times;
-	long long			last_eat;
+	int					last_eat;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
 	pthread_t			thread;
@@ -32,6 +32,7 @@ typedef struct s_table
 	long long			start;
 	pthread_mutex_t		*forks;
 	pthread_t			waiter;
+	pthread_t			printer;
 	t_philo				*philo;
 }						t_table;
 

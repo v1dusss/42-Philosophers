@@ -3,22 +3,40 @@
 void	philo_eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
-	printf("%dms %d took left fork\n", get_timestap(*philo), philo->id);
+	if ((get_timestap(*philo) - philo->last_eat) >= philo->table->time_to_die)
+	{
+		printf("%d %d died\n", get_timestap(*philo), philo->id);
+		philo->dead = 1;
+		philo->table->dead_count = 1;
+		exit(1);
+	}
+	printf("%d %d has taken a fork\n", get_timestap(*philo), philo->id);
 	pthread_mutex_lock(philo->right_fork);
-	printf("%dms %d took right fork\n", get_timestap(*philo), philo->id);
-	printf("%dms %d is eating\n", get_timestap(*philo), philo->id);
+	if ((get_timestap(*philo) - philo->last_eat) > philo->table->time_to_die)
+	{
+		printf("%d %d died\n", get_timestap(*philo), philo->id);
+		philo->dead = 1;
+		philo->table->dead_count = 1;
+		exit(1);
+	}
+	printf("%d %d has taken a fork\n", get_timestap(*philo), philo->id);
+	printf("%d %d is eating\n", get_timestap(*philo), philo->id);
+	philo->last_eat = get_timestap(*philo);
+	philo->eat_times++;
 	ft_usleep(philo->table->time_to_eat);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
 }
 
-void	*waiter_life(void *arg)
+void	philo_sleep(t_philo *philo)
 {
-	t_table	*table;
+	printf("%d %d is sleeping\n", get_timestap(*philo), philo->id);
+	ft_usleep(philo->table->time_to_sleep);
+}
 
-	table = (t_table *)arg;
-	printf("waiter is searving for %d philos\n", table->philo_num);
-	return (NULL);
+void	philo_think(t_philo *philo)
+{
+	printf("%d %d is thinking\n", get_timestap(*philo), philo->id);
 }
 
 void	*philo_life(void *arg)
@@ -32,18 +50,23 @@ void	*philo_life(void *arg)
 		ft_usleep(philo->table->time_to_eat);
 		// printf("*philo %d is waiting\n", philo->id);
 	}
-	// while (philo->dead == 0)
-	// {
-	philo_eat(philo);
-	// philo_sleep(philo);
-	// 	philo_think(philo);
-	// }
+	while (philo->dead == 0)
+	{
+		philo_eat(philo);
+		philo_sleep(philo);
+		philo_think(philo);
+	}
 	return (NULL);
 }
 
-// int	philo_think(t_philo *philo)
-// {
-// }
+void	*waiter_life(void *arg)
+{
+	t_table	*table;
+
+	table = (t_table *)arg;
+	// printf("waiter is searving for %d philos\n", table->philo_num);
+	return (NULL);
+}
 
 void	dinner_time(t_table *table)
 {
