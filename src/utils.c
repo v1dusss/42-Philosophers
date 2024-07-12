@@ -34,13 +34,14 @@ long long	get_time(void)
 		printf("Error: gettimeofday\n");
 		return (-1);
 	}
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+	return (time.tv_sec * 1000000 + time.tv_usec);
 }
 
 int	ft_usleep(long long ms)
 {
 	long long	start;
 
+	ms = ms * 1000;
 	start = get_time();
 	while (get_time() - start < ms)
 		usleep(100);
