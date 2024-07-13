@@ -20,6 +20,7 @@ typedef struct s_philo
 	pthread_t			thread;
 	int					dead;
 	t_table				*table;
+	int					finished;
 }						t_philo;
 typedef struct s_table
 {
@@ -28,6 +29,7 @@ typedef struct s_table
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					eat_times;
+	int					finished_eat;
 	int					dead_count;
 	long long			start;
 	pthread_mutex_t		*forks;
