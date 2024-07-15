@@ -20,7 +20,6 @@ typedef struct s_philo
 	pthread_t			thread;
 	int					dead;
 	t_table				*table;
-	int					finished;
 }						t_philo;
 typedef struct s_table
 {
@@ -29,15 +28,21 @@ typedef struct s_table
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					eat_times;
-	int					finished_eat;
+	int					end_dinner;
 	int					dead_count;
 	long long			start;
+	int					finished_count;
 	pthread_mutex_t		*forks;
 	pthread_t			waiter;
-	pthread_t			printer;
+	pthread_mutex_t		printer;
 	t_philo				*philo;
 }						t_table;
 
+# define FORK "\033[1;32mhas taken a fork\033[0m"
+# define EAT "\033[1;33mis eating\033[0m"
+# define SLEEP "\033[1;34mis sleeping\033[0m"
+# define THINK "\033[1;35mis thinking\033[0m"
+# define DEAD "died"
 # define ERROR_PHILO "\033[1;31mError: Failed to create philosophers\033[0m\n"
 
 void					usage(void);
@@ -49,5 +54,6 @@ int						ft_usleep(long long ms);
 void					get_start_time(t_table *table);
 long long				get_time(void);
 int						get_timestap(t_philo philo);
+void					ft_printf(int id, char *str, t_philo *philo);
 
 #endif

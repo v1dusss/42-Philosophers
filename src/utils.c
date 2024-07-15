@@ -61,3 +61,21 @@ void	get_start_time(t_table *table)
 		exit(1);
 	table->start = tv.tv_sec * 1000000 + tv.tv_usec;
 }
+
+void	ft_printf(int id, char *str, t_philo *philo)
+{
+	pthread_mutex_lock(&philo->table->printer);
+	if (philo->table->end_dinner)
+	{
+		pthread_mutex_unlock(&philo->table->printer);
+		return ;
+	}
+	if (str[0] == 'd')
+	{
+		printf("Test\n");
+		philo->table->end_dinner = 1;
+	}
+	printf("%d %d %d %s\n", get_timestap(*philo), id, philo->table->end_dinner,
+		str);
+	pthread_mutex_unlock(&philo->table->printer);
+}

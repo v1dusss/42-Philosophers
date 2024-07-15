@@ -1,16 +1,5 @@
 #include "philo.h"
 
-void	print_parsing(t_table *table)
-{
-	printf("philo_num: %d\n", table->philo_num);
-	printf("time_to_die: %d\n", table->time_to_die);
-	printf("time_to_eat: %d\n", table->time_to_eat);
-	printf("time_to_sleep: %d\n", table->time_to_sleep);
-	if (table->eat_times != -1)
-		printf("eat_times: %d\n", table->eat_times);
-	printf("\033[1;32mParsing is done! \033[0m\n");
-}
-
 void	destory_forks(t_table *table)
 {
 	int	i;
@@ -41,7 +30,6 @@ bool	create_philo(t_table *table)
 		table->philo[i].eat_times = 0;
 		table->philo[i].last_eat = 0;
 		table->philo[i].dead = 0;
-		table->philo[i].finished = 0;
 		(table->philo[i].left_fork = &table->forks[i]);
 		(table->philo[i].right_fork = &table->forks[(i + 1)
 			% table->philo_num]);
