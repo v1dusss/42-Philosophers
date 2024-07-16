@@ -36,7 +36,8 @@ typedef struct s_table
 	t_philo				*philo;
 }						t_table;
 
-# define FORK "\033[1;32mhas taken a fork\033[0m"
+# define L_FORK "\033[1;32mhas taken the left fork\033[0m"
+# define R_FORK "\033[1;32mhas taken the right fork\033[0m"
 # define EAT "\033[1;33mis eating\033[0m"
 # define SLEEP "\033[1;34mis sleeping\033[0m"
 # define THINK "\033[1;35mis thinking\033[0m"

@@ -6,16 +6,18 @@ bool	philo_eat(t_philo *philo)
 	if ((get_timestap(*philo) - philo->last_eat) >= philo->table->time_to_die)
 	{
 		ft_printf(philo->id, DEAD, philo);
+		pthread_mutex_unlock(philo->left_fork);
 		return (false);
 	}
-	ft_printf(philo->id, FORK, philo);
+	ft_printf(philo->id, L_FORK, philo);
 	pthread_mutex_lock(philo->right_fork);
 	if ((get_timestap(*philo) - philo->last_eat) > philo->table->time_to_die)
 	{
 		ft_printf(philo->id, DEAD, philo);
+		pthread_mutex_unlock(philo->right_fork);
 		return (false);
 	}
-	ft_printf(philo->id, FORK, philo);
+	ft_printf(philo->id, R_FORK, philo);
 	ft_printf(philo->id, EAT, philo);
 	philo->last_eat = get_timestap(*philo);
 	philo->eat_times++;
@@ -43,7 +45,7 @@ void	*philo_life(void *arg)
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 1)
 		ft_usleep(philo->table->time_to_eat);
-	while (!philo->table->end_dinner)
+	while (philo->table->end_dinner == false)
 	{
 		if (!philo_eat(philo))
 			return (NULL);
@@ -59,7 +61,7 @@ void	*waiter_life(void *arg)
 	int		i;
 
 	table = (t_table *)arg;
-	while (!table->end_dinner)
+	while (table->end_dinner == false)
 	{
 		i = -1;
 		table->finished_count = 0;
@@ -70,8 +72,8 @@ void	*waiter_life(void *arg)
 		}
 		if (table->eat_times > 0 && table->finished_count == table->philo_num)
 		{
-			table->end_dinner = 1;
-			break ;
+			table->end_dinner = true;
+			return (NULL);
 		}
 	}
 	return (NULL);
