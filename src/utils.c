@@ -71,11 +71,7 @@ void	ft_printf(int id, char *str, t_philo *philo)
 		return ;
 	}
 	if (str[0] == 'd')
-	{
-		printf("Test\n");
 		philo->table->end_dinner = 1;
-	}
-	printf("%d %d %d %s\n", get_timestap(*philo), id, philo->table->end_dinner,
-		str);
+	printf("%d %d %s\n", get_timestap(*philo), id, str);
 	pthread_mutex_unlock(&philo->table->printer);
 }

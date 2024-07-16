@@ -28,5 +28,4 @@ void	parsing(int argc, char **argv, t_table *table)
 		|| table->philo_num == 0 || table->time_to_die == 0
 		|| table->time_to_eat == 0 || table->time_to_sleep == 0)
 		usage();
-	table->dead_count = 0;
 }

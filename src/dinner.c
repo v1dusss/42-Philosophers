@@ -1,28 +1,19 @@
 #include "philo.h"
 
-void	starving(void)
-{
-}
-
-void	philo_eat(t_philo *philo)
+bool	philo_eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
 	if ((get_timestap(*philo) - philo->last_eat) >= philo->table->time_to_die)
 	{
 		ft_printf(philo->id, DEAD, philo);
-		printf("%d %d \n", philo->id, philo->table->end_dinner);
-		philo->dead = 1;
-		philo->table->dead_count = 1;
-		exit(1);
+		return (false);
 	}
 	ft_printf(philo->id, FORK, philo);
 	pthread_mutex_lock(philo->right_fork);
 	if ((get_timestap(*philo) - philo->last_eat) > philo->table->time_to_die)
 	{
 		ft_printf(philo->id, DEAD, philo);
-		printf("%d %d \n", philo->id, philo->table->end_dinner);
-		philo->table->dead_count = 1;
-		exit(1);
+		return (false);
 	}
 	ft_printf(philo->id, FORK, philo);
 	ft_printf(philo->id, EAT, philo);
@@ -31,6 +22,7 @@ void	philo_eat(t_philo *philo)
 	ft_usleep(philo->table->time_to_eat);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
+	return (true);
 }
 
 void	philo_sleep(t_philo *philo)
@@ -53,7 +45,8 @@ void	*philo_life(void *arg)
 		ft_usleep(philo->table->time_to_eat);
 	while (!philo->table->end_dinner)
 	{
-		philo_eat(philo);
+		if (!philo_eat(philo))
+			return (NULL);
 		philo_sleep(philo);
 		philo_think(philo);
 	}
@@ -66,7 +59,7 @@ void	*waiter_life(void *arg)
 	int		i;
 
 	table = (t_table *)arg;
-	while (1)
+	while (!table->end_dinner)
 	{
 		i = -1;
 		table->finished_count = 0;
@@ -84,7 +77,7 @@ void	*waiter_life(void *arg)
 	return (NULL);
 }
 
-void	dinner_time(t_table *table)
+bool	dinner_time(t_table *table)
 {
 	int	i;
 
@@ -102,4 +95,6 @@ void	dinner_time(t_table *table)
 	{
 		pthread_join(table->philo[i].thread, NULL);
 	}
+	pthread_join(table->waiter, NULL);
+	return (true);
 }

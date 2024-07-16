@@ -1,6 +1,6 @@
 #include "philo.h"
 
-void	destory_forks(t_table *table)
+void	ft_free(t_table *table)
 {
 	int	i;
 
@@ -24,12 +24,13 @@ bool	create_philo(t_table *table)
 		pthread_mutex_init(&table->forks[i], NULL);
 	i = -1;
 	table->philo = (t_philo *)malloc(sizeof(t_philo) * table->philo_num + 1);
+	if (!table->philo)
+		return (ft_free(table), false);
 	while (++i < table->philo_num)
 	{
 		table->philo[i].id = i + 1;
 		table->philo[i].eat_times = 0;
 		table->philo[i].last_eat = 0;
-		table->philo[i].dead = 0;
 		(table->philo[i].left_fork = &table->forks[i]);
 		(table->philo[i].right_fork = &table->forks[(i + 1)
 			% table->philo_num]);
@@ -47,9 +48,10 @@ int	main(int argc, char **argv)
 	if (argc < 5 || argc > 6)
 		usage();
 	parsing(argc, argv, &table);
-	// print_parsing(&table);
 	if (!create_philo(&table))
-		return (printf(ERROR_PHILO), destory_forks(&table), 1);
-	dinner_time(&table);
+		return (printf(ERROR_PHILO), 1);
+	if (!dinner_time(&table))
+		return (1);
+	ft_free(&table);
 	return (0);
 }
