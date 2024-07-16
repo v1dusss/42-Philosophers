@@ -20,6 +20,11 @@ bool	create_philo(t_table *table)
 	table->forks = malloc(sizeof(pthread_mutex_t) * table->philo_num);
 	if (!table->forks)
 		return (false);
+	pthread_mutex_init(&table->printer, NULL);
+	pthread_mutex_init(&table->time_to_die_protection, NULL);
+	pthread_mutex_init(&table->time_to_eat_protection, NULL);
+	pthread_mutex_init(&table->time_to_sleep_protection, NULL);
+	pthread_mutex_init(&table->end_dinner_protection, NULL);
 	while (++i < table->philo_num)
 		pthread_mutex_init(&table->forks[i], NULL);
 	i = -1;
@@ -37,7 +42,6 @@ bool	create_philo(t_table *table)
 		table->philo[i].table = table;
 		// printf("philo struct %d created\n", table->philo[i].id);
 	}
-	i = -1;
 	return (true);
 }
 

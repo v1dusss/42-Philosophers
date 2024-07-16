@@ -65,13 +65,17 @@ void	get_start_time(t_table *table)
 void	ft_printf(int id, char *str, t_philo *philo)
 {
 	pthread_mutex_lock(&philo->table->printer);
-	if (philo->table->end_dinner)
+	if (get_end_dinner(philo->table))
 	{
 		pthread_mutex_unlock(&philo->table->printer);
 		return ;
 	}
 	if (str[0] == 'd')
+	{
+		pthread_mutex_lock(&philo->table->end_dinner_protection);
 		philo->table->end_dinner = true;
+		pthread_mutex_unlock(&philo->table->end_dinner_protection);
+	}
 	printf("%d %d %s\n", get_timestap(*philo), id, str);
 	pthread_mutex_unlock(&philo->table->printer);
 }

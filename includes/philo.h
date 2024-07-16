@@ -26,8 +26,12 @@ typedef struct s_table
 	int					time_to_die;
 	int					time_to_eat;
 	int					time_to_sleep;
+	pthread_mutex_t		time_to_die_protection;
+	pthread_mutex_t		time_to_eat_protection;
+	pthread_mutex_t		time_to_sleep_protection;
 	int					eat_times;
 	int					end_dinner;
+	pthread_mutex_t		end_dinner_protection;
 	long long			start;
 	int					finished_count;
 	pthread_mutex_t		*forks;
@@ -36,8 +40,8 @@ typedef struct s_table
 	t_philo				*philo;
 }						t_table;
 
-# define L_FORK "\033[1;32mhas taken the left fork\033[0m"
-# define R_FORK "\033[1;32mhas taken the right fork\033[0m"
+# define L_FORK "\033[1;32mhas taken a fork\033[0m"
+# define R_FORK "\033[1;32mhas taken a fork\033[0m"
 # define EAT "\033[1;33mis eating\033[0m"
 # define SLEEP "\033[1;34mis sleeping\033[0m"
 # define THINK "\033[1;35mis thinking\033[0m"
@@ -54,5 +58,10 @@ void					get_start_time(t_table *table);
 long long				get_time(void);
 int						get_timestap(t_philo philo);
 void					ft_printf(int id, char *str, t_philo *philo);
+
+int						get_time_to_eat(t_table *table);
+int						get_time_to_sleep(t_table *table);
+int						get_time_to_die(t_table *table);
+bool					get_end_dinner(t_table *table);
 
 #endif

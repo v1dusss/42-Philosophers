@@ -14,6 +14,7 @@ bool	philo_eat(t_philo *philo)
 	if ((get_timestap(*philo) - philo->last_eat) > philo->table->time_to_die)
 	{
 		ft_printf(philo->id, DEAD, philo);
+		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_unlock(philo->right_fork);
 		return (false);
 	}
@@ -21,7 +22,7 @@ bool	philo_eat(t_philo *philo)
 	ft_printf(philo->id, EAT, philo);
 	philo->last_eat = get_timestap(*philo);
 	philo->eat_times++;
-	ft_usleep(philo->table->time_to_eat);
+	ft_usleep(get_time_to_eat(philo->table));
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
 	return (true);
@@ -30,7 +31,7 @@ bool	philo_eat(t_philo *philo)
 void	philo_sleep(t_philo *philo)
 {
 	ft_printf(philo->id, SLEEP, philo);
-	ft_usleep(philo->table->time_to_sleep);
+	ft_usleep(get_time_to_sleep(philo->table));
 }
 
 void	philo_think(t_philo *philo)
@@ -44,8 +45,8 @@ void	*philo_life(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 1)
-		ft_usleep(philo->table->time_to_eat);
-	while (philo->table->end_dinner == false)
+		ft_usleep(get_time_to_eat(philo->table));
+	while (get_end_dinner(philo->table) == false)
 	{
 		if (!philo_eat(philo))
 			return (NULL);
@@ -61,7 +62,7 @@ void	*waiter_life(void *arg)
 	int		i;
 
 	table = (t_table *)arg;
-	while (table->end_dinner == false)
+	while (get_end_dinner(table) == false)
 	{
 		i = -1;
 		table->finished_count = 0;
@@ -72,7 +73,9 @@ void	*waiter_life(void *arg)
 		}
 		if (table->eat_times > 0 && table->finished_count == table->philo_num)
 		{
+			pthread_mutex_lock(&table->end_dinner_protection);
 			table->end_dinner = true;
+			pthread_mutex_unlock(&table->end_dinner_protection);
 			return (NULL);
 		}
 	}
@@ -82,18 +85,22 @@ void	*waiter_life(void *arg)
 bool	dinner_time(t_table *table)
 {
 	int	i;
+	int	philo_num;
 
 	i = -1;
+	philo_num = table->philo_num;
+	pthread_mutex_lock(&table->end_dinner_protection);
+	table->end_dinner = false;
+	pthread_mutex_unlock(&table->end_dinner_protection);
 	get_start_time(table);
-	table->end_dinner = 0;
-	while (++i < table->philo_num)
+	while (++i < philo_num)
 	{
 		pthread_create(&table->philo[i].thread, NULL, philo_life,
 			&table->philo[i]);
 	}
 	pthread_create(&table->waiter, NULL, waiter_life, table);
 	i = -1;
-	while (++i < table->philo_num)
+	while (++i < philo_num)
 	{
 		pthread_join(table->philo[i].thread, NULL);
 	}
