@@ -6,7 +6,7 @@
 /*   By: vsivanat <vsivanat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 23:51:12 by vsivanat          #+#    #+#             */
-/*   Updated: 2024/07/17 23:51:14 by vsivanat         ###   ########.fr       */
+/*   Updated: 2024/07/18 00:00:08 by vsivanat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	philo_init(t_table *table)
 		table->philo[i].last_eat = 0;
 		(table->philo[i].left_fork = &table->forks[i]);
 		(table->philo[i].right_fork = &table->forks[(i + 1)
-			% table->philo_num]);
+				% table->philo_num]);
 		pthread_mutex_init(&table->philo[i].num_eaten_dinners_protection, NULL);
 		pthread_mutex_init(&table->philo[i].last_eat_protection, NULL);
 		table->philo[i].table = table;
@@ -86,6 +86,8 @@ int	main(int argc, char **argv)
 	if (argc < 5 || argc > 6)
 		usage();
 	parsing(argc, argv, &table);
+	if (table.philo_num == 1)
+		one_philo(&table);
 	if (!create_philo(&table))
 		return (printf(ERROR_PHILO), 1);
 	if (!dinner_time(&table))

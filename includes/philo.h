@@ -6,7 +6,7 @@
 /*   By: vsivanat <vsivanat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 23:51:47 by vsivanat          #+#    #+#             */
-/*   Updated: 2024/07/17 23:51:51 by vsivanat         ###   ########.fr       */
+/*   Updated: 2024/07/18 00:19:32 by vsivanat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_table
 void					usage(void);
 void					parsing(int argc, char **argv, t_table *table);
 bool					dinner_time(t_table *table);
+void					one_philo(t_table *table);
 
 int						ft_atoi(const char *str);
 int						ft_usleep(long long ms);

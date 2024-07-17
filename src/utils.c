@@ -6,7 +6,7 @@
 /*   By: vsivanat <vsivanat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 23:51:37 by vsivanat          #+#    #+#             */
-/*   Updated: 2024/07/17 23:51:38 by vsivanat         ###   ########.fr       */
+/*   Updated: 2024/07/18 00:13:02 by vsivanat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,12 @@ void	ft_printf(int id, char *str, t_philo *philo)
 	}
 	printf("%d %d %s\n", get_timestap(philo), id, str);
 	pthread_mutex_unlock(&philo->table->printer);
+}
+
+void	one_philo(t_table *table)
+{
+	printf("0 1 "L_FORK"\n");
+	ft_usleep(table->time_to_die);
+	printf("%d 1 "DEAD"\n", table->time_to_die);
+	exit(0);
 }

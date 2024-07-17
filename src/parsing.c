@@ -6,7 +6,7 @@
 /*   By: vsivanat <vsivanat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 23:51:23 by vsivanat          #+#    #+#             */
-/*   Updated: 2024/07/17 23:51:24 by vsivanat         ###   ########.fr       */
+/*   Updated: 2024/07/17 23:57:37 by vsivanat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	usage(void)
 {
 	printf("Usage: ./philo\n");
-	printf("* number_of_philosophers > 2\n");
+	printf("* number_of_philosophers > 0\n");
 	printf("* time_to_die > 60\n");
 	printf("* time_to_eat > 60\n");
 	printf("* time_to_sleep > 60\n");
@@ -33,7 +33,7 @@ void	parsing(int argc, char **argv, t_table *table)
 		table->eat_times = ft_atoi(argv[5]);
 	else
 		table->eat_times = -1;
-	if (table->philo_num < 2 || table->time_to_die < 60
+	if (table->philo_num < 1 || table->time_to_die < 60
 		|| table->time_to_eat < 60 || table->time_to_sleep < 60
 		|| (table->eat_times < 1 && table->eat_times != -1)
 		|| table->eat_times == 0 || table->philo_num == 0
