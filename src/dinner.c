@@ -23,8 +23,6 @@ void	*waiter_life(void *arg)
 	int		i;
 
 	table = (t_table *)arg;
-	if (table->eat_times < 1)
-		return (NULL);
 	while (get_end_dinner(table) == false)
 	{
 		i = -1;
@@ -33,6 +31,8 @@ void	*waiter_life(void *arg)
 		{
 			if (get_num_eaten_dinenrs(table, i + 1) >= table->eat_times)
 				table->finished_count++;
+			if (starved(&table->philo[i], i + 1) == true)
+				ft_printf(i + 1, DEAD, &table->philo[i]);
 		}
 		if (table->eat_times > 0 && table->finished_count == table->philo_num)
 		{

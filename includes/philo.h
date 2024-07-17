@@ -1,4 +1,3 @@
-
 #ifndef PHILO_H
 # define PHILO_H
 
@@ -73,6 +72,6 @@ long long				get_start(t_table *table);
 bool					philo_eat(t_philo *philo);
 void					philo_sleep(t_philo *philo);
 void					philo_think(t_philo *philo);
-bool					starved(t_philo *philo);
+bool					starved(t_philo *philo, int id);
 
 #endif

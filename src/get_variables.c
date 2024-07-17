@@ -9,6 +9,7 @@ int	get_time_to_eat(t_table *table)
 	pthread_mutex_unlock(&table->time_to_eat_protection);
 	return (time_to_eat);
 }
+
 int	get_time_to_sleep(t_table *table)
 {
 	int	time_to_sleep;

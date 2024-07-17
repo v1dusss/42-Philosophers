@@ -48,7 +48,7 @@ void	get_start_time(t_table *table)
 void	ft_printf(int id, char *str, t_philo *philo)
 {
 	pthread_mutex_lock(&philo->table->printer);
-	if (get_end_dinner(philo->table))
+	if (get_end_dinner(philo->table) == true)
 	{
 		pthread_mutex_unlock(&philo->table->printer);
 		return ;

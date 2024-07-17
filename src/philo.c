@@ -12,14 +12,14 @@ void	death(t_philo *philo, bool left_fork, bool right_fork)
 bool	philo_eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
-	if (starved(philo) == true)
+	if (starved(philo, philo->id) == true)
 	{
 		death(philo, true, false);
 		return (false);
 	}
 	ft_printf(philo->id, L_FORK, philo);
 	pthread_mutex_lock(philo->right_fork);
-	if (starved(philo) == true)
+	if (starved(philo, philo->id) == true)
 	{
 		death(philo, true, true);
 		return (false);
@@ -33,8 +33,8 @@ bool	philo_eat(t_philo *philo)
 	pthread_mutex_lock(&philo->num_eaten_dinners_protection);
 	philo->num_eaten_dinners++;
 	pthread_mutex_unlock(&philo->num_eaten_dinners_protection);
-	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
 	return (true);
 }
 
@@ -49,10 +49,10 @@ void	philo_think(t_philo *philo)
 	ft_printf(philo->id, THINK, philo);
 }
 
-bool	starved(t_philo *philo)
+bool	starved(t_philo *philo, int id)
 {
 	if ((get_timestap(philo) - get_last_eaten_dinner(philo->table,
-				philo->id)) >= get_time_to_die(philo->table))
+				id)) >= get_time_to_die(philo->table))
 		return (true);
 	return (false);
 }
