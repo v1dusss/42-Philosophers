@@ -1,21 +1,27 @@
 #include "philo.h"
 
+void	death(t_philo *philo, bool left_fork, bool right_fork)
+{
+	if (right_fork == true)
+		pthread_mutex_unlock(philo->right_fork);
+	if (left_fork == true)
+		pthread_mutex_unlock(philo->left_fork);
+	ft_printf(philo->id, DEAD, philo);
+}
+
 bool	philo_eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
 	if (starved(philo) == true)
 	{
-		ft_printf(philo->id, DEAD, philo);
-		pthread_mutex_unlock(philo->left_fork);
+		death(philo, true, false);
 		return (false);
 	}
 	ft_printf(philo->id, L_FORK, philo);
 	pthread_mutex_lock(philo->right_fork);
 	if (starved(philo) == true)
 	{
-		ft_printf(philo->id, DEAD, philo);
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(philo->right_fork);
+		death(philo, true, true);
 		return (false);
 	}
 	ft_printf(philo->id, R_FORK, philo);
@@ -27,8 +33,8 @@ bool	philo_eat(t_philo *philo)
 	pthread_mutex_lock(&philo->num_eaten_dinners_protection);
 	philo->num_eaten_dinners++;
 	pthread_mutex_unlock(&philo->num_eaten_dinners_protection);
-	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
+	pthread_mutex_unlock(philo->left_fork);
 	return (true);
 }
 

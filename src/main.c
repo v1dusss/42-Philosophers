@@ -7,9 +7,40 @@ void	ft_free(t_table *table)
 	i = -1;
 	while (++i < table->philo_num)
 		pthread_mutex_destroy(&table->forks[i]);
+	pthread_mutex_destroy(&table->printer);
+	pthread_mutex_destroy(&table->time_to_die_protection);
+	pthread_mutex_destroy(&table->time_to_eat_protection);
+	pthread_mutex_destroy(&table->time_to_sleep_protection);
+	pthread_mutex_destroy(&table->end_dinner_protection);
+	pthread_mutex_destroy(&table->start_protection);
+	i = -1;
+	while (++i < table->philo_num)
+	{
+		pthread_mutex_destroy(&table->philo[i].num_eaten_dinners_protection);
+		pthread_mutex_destroy(&table->philo[i].last_eat_protection);
+	}
 	free(table->forks);
 	if (table->philo)
 		free(table->philo);
+}
+
+void	philo_init(t_table *table)
+{
+	int	i;
+
+	i = -1;
+	while (++i < table->philo_num)
+	{
+		table->philo[i].id = i + 1;
+		table->philo[i].num_eaten_dinners = 0;
+		table->philo[i].last_eat = 0;
+		(table->philo[i].left_fork = &table->forks[i]);
+		(table->philo[i].right_fork = &table->forks[(i + 1)
+			% table->philo_num]);
+		pthread_mutex_init(&table->philo[i].num_eaten_dinners_protection, NULL);
+		pthread_mutex_init(&table->philo[i].last_eat_protection, NULL);
+		table->philo[i].table = table;
+	}
 }
 
 bool	create_philo(t_table *table)
@@ -32,18 +63,7 @@ bool	create_philo(t_table *table)
 	table->philo = (t_philo *)malloc(sizeof(t_philo) * table->philo_num + 1);
 	if (!table->philo)
 		return (ft_free(table), false);
-	while (++i < table->philo_num)
-	{
-		table->philo[i].id = i + 1;
-		table->philo[i].num_eaten_dinners = 0;
-		table->philo[i].last_eat = 0;
-		(table->philo[i].left_fork = &table->forks[i]);
-		(table->philo[i].right_fork = &table->forks[(i + 1)
-			% table->philo_num]);
-		pthread_mutex_init(&table->philo[i].num_eaten_dinners_protection, NULL);
-		pthread_mutex_init(&table->philo[i].last_eat_protection, NULL);
-		table->philo[i].table = table;
-	}
+	philo_init(table);
 	return (true);
 }
 
