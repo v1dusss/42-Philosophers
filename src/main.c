@@ -25,6 +25,7 @@ bool	create_philo(t_table *table)
 	pthread_mutex_init(&table->time_to_eat_protection, NULL);
 	pthread_mutex_init(&table->time_to_sleep_protection, NULL);
 	pthread_mutex_init(&table->end_dinner_protection, NULL);
+	pthread_mutex_init(&table->start_protection, NULL);
 	while (++i < table->philo_num)
 		pthread_mutex_init(&table->forks[i], NULL);
 	i = -1;

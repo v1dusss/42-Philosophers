@@ -9,10 +9,12 @@ VPATH = \
 		src
 
 SRC = main.c \
+		philo.c \
 		parsing.c \
 		dinner.c \
 		utils.c \
 		get_variables.c \
+		get_variables_2.c
 
 OBJ	:=	$(addprefix $(OBJDIR)/, $(SRC:.c=.o))
 

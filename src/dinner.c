@@ -1,48 +1,5 @@
 #include "philo.h"
 
-bool	philo_eat(t_philo *philo)
-{
-	pthread_mutex_lock(philo->left_fork);
-	if (starved(philo) == true)
-	{
-		ft_printf(philo->id, DEAD, philo);
-		pthread_mutex_unlock(philo->left_fork);
-		return (false);
-	}
-	ft_printf(philo->id, L_FORK, philo);
-	pthread_mutex_lock(philo->right_fork);
-	if (starved(philo) == true)
-	{
-		ft_printf(philo->id, DEAD, philo);
-		pthread_mutex_unlock(philo->left_fork);
-		pthread_mutex_unlock(philo->right_fork);
-		return (false);
-	}
-	ft_printf(philo->id, R_FORK, philo);
-	ft_printf(philo->id, EAT, philo);
-	pthread_mutex_lock(&philo->last_eat_protection);
-	philo->last_eat = get_timestap(philo);
-	pthread_mutex_unlock(&philo->last_eat_protection);
-	pthread_mutex_lock(&philo->num_eaten_dinners_protection);
-	philo->num_eaten_dinners++;
-	pthread_mutex_unlock(&philo->num_eaten_dinners_protection);
-	ft_usleep(get_time_to_eat(philo->table));
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
-	return (true);
-}
-
-void	philo_sleep(t_philo *philo)
-{
-	ft_printf(philo->id, SLEEP, philo);
-	ft_usleep(get_time_to_sleep(philo->table));
-}
-
-void	philo_think(t_philo *philo)
-{
-	ft_printf(philo->id, THINK, philo);
-}
-
 void	*philo_life(void *arg)
 {
 	t_philo	*philo;
@@ -52,7 +9,7 @@ void	*philo_life(void *arg)
 		ft_usleep(get_time_to_eat(philo->table));
 	while (get_end_dinner(philo->table) == false)
 	{
-		if (!philo_eat(philo))
+		if (philo_eat(philo) == false)
 			return (NULL);
 		philo_sleep(philo);
 		philo_think(philo);

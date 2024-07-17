@@ -62,11 +62,3 @@ void	ft_printf(int id, char *str, t_philo *philo)
 	printf("%d %d %s\n", get_timestap(philo), id, str);
 	pthread_mutex_unlock(&philo->table->printer);
 }
-
-bool	starved(t_philo *philo)
-{
-	if ((get_timestap(philo) - get_last_eaten_dinner(philo->table,
-				philo->id)) >= get_time_to_die(philo->table))
-		return (true);
-	return (false);
-}

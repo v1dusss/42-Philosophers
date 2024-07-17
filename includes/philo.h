@@ -43,8 +43,8 @@ typedef struct s_table
 	t_philo				*philo;
 }						t_table;
 
-# define L_FORK "\033[1;32mhas taken the left fork\033[0m"
-# define R_FORK "\033[1;32mhas taken the rigth fork\033[0m"
+# define L_FORK "\033[1;32mhas taken a fork\033[0m"
+# define R_FORK "\033[1;32mhas taken a fork\033[0m"
 # define EAT "\033[1;33mis eating\033[0m"
 # define SLEEP "\033[1;34mis sleeping\033[0m"
 # define THINK "\033[1;35mis thinking\033[0m"
@@ -61,7 +61,6 @@ void					get_start_time(t_table *table);
 long long				get_time(void);
 int						get_timestap(t_philo *philo);
 void					ft_printf(int id, char *str, t_philo *philo);
-bool					starved(t_philo *philo);
 
 int						get_time_to_eat(t_table *table);
 int						get_time_to_sleep(t_table *table);
@@ -70,5 +69,10 @@ bool					get_end_dinner(t_table *table);
 int						get_num_eaten_dinenrs(t_table *table, int i);
 int						get_last_eaten_dinner(t_table *table, int i);
 long long				get_start(t_table *table);
+
+bool					philo_eat(t_philo *philo);
+void					philo_sleep(t_philo *philo);
+void					philo_think(t_philo *philo);
+bool					starved(t_philo *philo);
 
 #endif
