@@ -34,13 +34,14 @@ bool	create_philo(t_table *table)
 	while (++i < table->philo_num)
 	{
 		table->philo[i].id = i + 1;
-		table->philo[i].eat_times = 0;
+		table->philo[i].num_eaten_dinners = 0;
 		table->philo[i].last_eat = 0;
 		(table->philo[i].left_fork = &table->forks[i]);
 		(table->philo[i].right_fork = &table->forks[(i + 1)
 			% table->philo_num]);
+		pthread_mutex_init(&table->philo[i].num_eaten_dinners_protection, NULL);
+		pthread_mutex_init(&table->philo[i].last_eat_protection, NULL);
 		table->philo[i].table = table;
-		// printf("philo struct %d created\n", table->philo[i].id);
 	}
 	return (true);
 }

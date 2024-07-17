@@ -25,23 +25,6 @@ int	ft_atoi(const char *str)
 	return (0);
 }
 
-int	get_timestap(t_philo philo)
-{
-	return ((get_time() - philo.table->start) / 1000);
-}
-
-long long	get_time(void)
-{
-	struct timeval	time;
-
-	if (gettimeofday(&time, NULL) == -1)
-	{
-		printf("Error: gettimeofday\n");
-		return (-1);
-	}
-	return (time.tv_sec * 1000000 + time.tv_usec);
-}
-
 int	ft_usleep(long long ms)
 {
 	long long	start;
@@ -76,6 +59,14 @@ void	ft_printf(int id, char *str, t_philo *philo)
 		philo->table->end_dinner = true;
 		pthread_mutex_unlock(&philo->table->end_dinner_protection);
 	}
-	printf("%d %d %s\n", get_timestap(*philo), id, str);
+	printf("%d %d %s\n", get_timestap(philo), id, str);
 	pthread_mutex_unlock(&philo->table->printer);
+}
+
+bool	starved(t_philo *philo)
+{
+	if ((get_timestap(philo) - get_last_eaten_dinner(philo->table,
+				philo->id)) >= get_time_to_die(philo->table))
+		return (true);
+	return (false);
 }

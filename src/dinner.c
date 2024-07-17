@@ -3,7 +3,7 @@
 bool	philo_eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->left_fork);
-	if ((get_timestap(*philo) - philo->last_eat) >= philo->table->time_to_die)
+	if (starved(philo) == true)
 	{
 		ft_printf(philo->id, DEAD, philo);
 		pthread_mutex_unlock(philo->left_fork);
@@ -11,7 +11,7 @@ bool	philo_eat(t_philo *philo)
 	}
 	ft_printf(philo->id, L_FORK, philo);
 	pthread_mutex_lock(philo->right_fork);
-	if ((get_timestap(*philo) - philo->last_eat) > philo->table->time_to_die)
+	if (starved(philo) == true)
 	{
 		ft_printf(philo->id, DEAD, philo);
 		pthread_mutex_unlock(philo->left_fork);
@@ -20,8 +20,12 @@ bool	philo_eat(t_philo *philo)
 	}
 	ft_printf(philo->id, R_FORK, philo);
 	ft_printf(philo->id, EAT, philo);
-	philo->last_eat = get_timestap(*philo);
-	philo->eat_times++;
+	pthread_mutex_lock(&philo->last_eat_protection);
+	philo->last_eat = get_timestap(philo);
+	pthread_mutex_unlock(&philo->last_eat_protection);
+	pthread_mutex_lock(&philo->num_eaten_dinners_protection);
+	philo->num_eaten_dinners++;
+	pthread_mutex_unlock(&philo->num_eaten_dinners_protection);
 	ft_usleep(get_time_to_eat(philo->table));
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
@@ -68,7 +72,7 @@ void	*waiter_life(void *arg)
 		table->finished_count = 0;
 		while (++i < table->philo_num)
 		{
-			if (table->philo[i].eat_times >= table->eat_times)
+			if (get_num_eaten_dinenrs(table, i) >= table->eat_times)
 				table->finished_count++;
 		}
 		if (table->eat_times > 0 && table->finished_count == table->philo_num)
