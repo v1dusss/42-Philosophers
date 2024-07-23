@@ -6,7 +6,7 @@
 /*   By: vsivanat <vsivanat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 23:51:37 by vsivanat          #+#    #+#             */
-/*   Updated: 2024/07/18 00:13:02 by vsivanat         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:13:22 by vsivanat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	ft_usleep(long long ms)
 	return (0);
 }
 
-void	get_start_time(t_table *table)
+void	dinner_start_time(t_table *table)
 {
 	struct timeval	tv;
 
@@ -71,7 +71,7 @@ void	ft_printf(int id, char *str, t_philo *philo)
 		philo->table->end_dinner = true;
 		pthread_mutex_unlock(&philo->table->end_dinner_protection);
 	}
-	printf("%d %d %s\n", get_timestap(philo), id, str);
+	printf("%d %d %s\n", timestamp(philo), id, str);
 	pthread_mutex_unlock(&philo->table->printer);
 }
 

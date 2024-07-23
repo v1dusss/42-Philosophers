@@ -6,15 +6,15 @@
 /*   By: vsivanat <vsivanat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 23:51:27 by vsivanat          #+#    #+#             */
-/*   Updated: 2024/07/17 23:51:31 by vsivanat         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:21:07 by vsivanat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	get_timestap(t_philo *philo)
+int	timestamp(t_philo *philo)
 {
-	return ((get_time() - get_start(philo->table)) / 1000);
+	return ((get_time() - dinner_start_time_get(philo->table)) / 1000);
 }
 
 long long	get_time(void)
@@ -29,7 +29,7 @@ long long	get_time(void)
 	return (time.tv_sec * 1000000 + time.tv_usec);
 }
 
-long long	get_start(t_table *table)
+long long	dinner_start_time_get(t_table *table)
 {
 	long long	start;
 
@@ -49,12 +49,12 @@ int	get_num_eaten_dinenrs(t_table *table, int id)
 	return (num_eaten_dinners);
 }
 
-int	get_last_eaten_dinner(t_table *table, int id)
+int	time_of_last_meal_get(t_table *table, int id)
 {
-	int	last_eat;
+	int	last_meal;
 
-	pthread_mutex_lock(&table->philo[id - 1].last_eat_protection);
-	last_eat = table->philo[id - 1].last_eat;
-	pthread_mutex_unlock(&table->philo[id - 1].last_eat_protection);
-	return (last_eat);
+	pthread_mutex_lock(&table->philo[id - 1].time_of_last_meal_protection);
+	last_meal = table->philo[id - 1].last_meal;
+	pthread_mutex_unlock(&table->philo[id - 1].time_of_last_meal_protection);
+	return (last_meal);
 }

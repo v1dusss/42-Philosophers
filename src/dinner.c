@@ -6,7 +6,7 @@
 /*   By: vsivanat <vsivanat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 23:51:18 by vsivanat          #+#    #+#             */
-/*   Updated: 2024/07/17 23:51:19 by vsivanat         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:14:53 by vsivanat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*philo_life(void *arg)
 
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 1)
-		ft_usleep(get_time_to_eat(philo->table));
+		ft_usleep(time_to_eat_get(philo->table));
 	while (get_end_dinner(philo->table) == false)
 	{
 		if (philo_eat(philo) == false)
@@ -67,7 +67,7 @@ bool	dinner_time(t_table *table)
 	pthread_mutex_lock(&table->end_dinner_protection);
 	table->end_dinner = false;
 	pthread_mutex_unlock(&table->end_dinner_protection);
-	get_start_time(table);
+	dinner_start_time(table);
 	while (++i < philo_num)
 	{
 		pthread_create(&table->philo[i].thread, NULL, philo_life,

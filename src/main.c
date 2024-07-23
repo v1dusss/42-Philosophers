@@ -6,7 +6,7 @@
 /*   By: vsivanat <vsivanat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 23:51:12 by vsivanat          #+#    #+#             */
-/*   Updated: 2024/07/18 00:00:08 by vsivanat         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:19:52 by vsivanat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_free(t_table *table)
 	while (++i < table->philo_num)
 	{
 		pthread_mutex_destroy(&table->philo[i].num_eaten_dinners_protection);
-		pthread_mutex_destroy(&table->philo[i].last_eat_protection);
+		pthread_mutex_destroy(&table->philo[i].time_of_last_meal_protection);
 	}
 	free(table->forks);
 	if (table->philo)
@@ -45,12 +45,12 @@ void	philo_init(t_table *table)
 	{
 		table->philo[i].id = i + 1;
 		table->philo[i].num_eaten_dinners = 0;
-		table->philo[i].last_eat = 0;
+		table->philo[i].last_meal = 0;
 		(table->philo[i].left_fork = &table->forks[i]);
 		(table->philo[i].right_fork = &table->forks[(i + 1)
 				% table->philo_num]);
 		pthread_mutex_init(&table->philo[i].num_eaten_dinners_protection, NULL);
-		pthread_mutex_init(&table->philo[i].last_eat_protection, NULL);
+		pthread_mutex_init(&table->philo[i].time_of_last_meal_protection, NULL);
 		table->philo[i].table = table;
 	}
 }

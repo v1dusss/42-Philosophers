@@ -6,13 +6,13 @@
 /*   By: vsivanat <vsivanat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 23:51:41 by vsivanat          #+#    #+#             */
-/*   Updated: 2024/07/17 23:51:43 by vsivanat         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:15:38 by vsivanat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	get_time_to_eat(t_table *table)
+int	time_to_eat_get(t_table *table)
 {
 	int	time_to_eat;
 
@@ -22,7 +22,7 @@ int	get_time_to_eat(t_table *table)
 	return (time_to_eat);
 }
 
-int	get_time_to_sleep(t_table *table)
+int	time_to_sleep_get(t_table *table)
 {
 	int	time_to_sleep;
 
@@ -32,7 +32,7 @@ int	get_time_to_sleep(t_table *table)
 	return (time_to_sleep);
 }
 
-int	get_time_to_die(t_table *table)
+int	time_to_die_get(t_table *table)
 {
 	int	time_to_die;
 

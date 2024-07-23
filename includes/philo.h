@@ -6,7 +6,7 @@
 /*   By: vsivanat <vsivanat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 23:51:47 by vsivanat          #+#    #+#             */
-/*   Updated: 2024/07/18 00:19:32 by vsivanat         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:21:07 by vsivanat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,14 @@ typedef struct s_philo
 	int					id;
 	int					num_eaten_dinners;
 	pthread_mutex_t		num_eaten_dinners_protection;
-	int					last_eat;
-	pthread_mutex_t		last_eat_protection;
+	int					last_meal;
+	pthread_mutex_t		time_of_last_meal_protection;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
 	pthread_t			thread;
 	t_table				*table;
 }						t_philo;
+
 typedef struct s_table
 {
 	int					philo_num;
@@ -69,18 +70,18 @@ void					one_philo(t_table *table);
 
 int						ft_atoi(const char *str);
 int						ft_usleep(long long ms);
-void					get_start_time(t_table *table);
+void					dinner_start_time(t_table *table);
 long long				get_time(void);
-int						get_timestap(t_philo *philo);
+int						timestamp(t_philo *philo);
 void					ft_printf(int id, char *str, t_philo *philo);
 
-int						get_time_to_eat(t_table *table);
-int						get_time_to_sleep(t_table *table);
-int						get_time_to_die(t_table *table);
+int						time_to_eat_get(t_table *table);
+int						time_to_sleep_get(t_table *table);
+int						time_to_die_get(t_table *table);
 bool					get_end_dinner(t_table *table);
 int						get_num_eaten_dinenrs(t_table *table, int i);
-int						get_last_eaten_dinner(t_table *table, int i);
-long long				get_start(t_table *table);
+int						time_of_last_meal_get(t_table *table, int i);
+long long				dinner_start_time_get(t_table *table);
 
 bool					philo_eat(t_philo *philo);
 void					philo_sleep(t_philo *philo);

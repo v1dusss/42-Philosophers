@@ -6,7 +6,7 @@
 /*   By: vsivanat <vsivanat@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 23:51:33 by vsivanat          #+#    #+#             */
-/*   Updated: 2024/07/17 23:51:34 by vsivanat         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:19:52 by vsivanat         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ bool	philo_eat(t_philo *philo)
 	}
 	ft_printf(philo->id, R_FORK, philo);
 	ft_printf(philo->id, EAT, philo);
-	pthread_mutex_lock(&philo->last_eat_protection);
-	philo->last_eat = get_timestap(philo);
-	pthread_mutex_unlock(&philo->last_eat_protection);
-	ft_usleep(get_time_to_eat(philo->table));
+	pthread_mutex_lock(&philo->time_of_last_meal_protection);
+	philo->last_meal = timestamp(philo);
+	pthread_mutex_unlock(&philo->time_of_last_meal_protection);
+	ft_usleep(time_to_eat_get(philo->table));
 	pthread_mutex_lock(&philo->num_eaten_dinners_protection);
 	philo->num_eaten_dinners++;
 	pthread_mutex_unlock(&philo->num_eaten_dinners_protection);
@@ -53,7 +53,7 @@ bool	philo_eat(t_philo *philo)
 void	philo_sleep(t_philo *philo)
 {
 	ft_printf(philo->id, SLEEP, philo);
-	ft_usleep(get_time_to_sleep(philo->table));
+	ft_usleep(time_to_sleep_get(philo->table));
 }
 
 void	philo_think(t_philo *philo)
@@ -63,8 +63,8 @@ void	philo_think(t_philo *philo)
 
 bool	starved(t_philo *philo, int id)
 {
-	if ((get_timestap(philo) - get_last_eaten_dinner(philo->table,
-				id)) >= get_time_to_die(philo->table))
+	if ((timestamp(philo) - time_of_last_meal_get(philo->table,
+				id)) >= time_to_die_get(philo->table))
 		return (true);
 	return (false);
 }

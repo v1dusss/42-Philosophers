@@ -6,7 +6,7 @@
 #    By: vsivanat <vsivanat@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/17 23:51:06 by vsivanat          #+#    #+#              #
-#    Updated: 2024/07/17 23:51:09 by vsivanat         ###   ########.fr        #
+#    Updated: 2024/07/23 15:09:40 by vsivanat         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ OBJDIR := obj
 
 VPATH = \
 		includes \
-		src
+		src \
+		src/variables
 
 SRC = main.c \
 		philo.c \
